@@ -16,7 +16,7 @@ php composer.phar require virbo/yii2-bniecoll "~1.0"
 or add
 
 ```
-"virbo/yii2-kilatstobniecollrage": "~1.0"
+"virbo/yii2-bniecoll": "~1.0"
 ```
 
 to the require section of your `composer.json` file.
