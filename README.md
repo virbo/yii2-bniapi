@@ -1,6 +1,6 @@
-Library for S3 Kilatstorage
+Component API BNI eCollection for Yii2
 ===========================
-Library for S3 Kilatstorage
+Component API BNI eCollection for Yii2
 
 Installation
 ------------
@@ -10,13 +10,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require virbo/yii2-kilatstorage "~1.0"
+php composer.phar require virbo/yii2-bniecoll "~1.0"
 ```
 
 or add
 
 ```
-"virbo/yii2-kilatstorage": "~1.0"
+"virbo/yii2-kilatstobniecollrage": "~1.0"
 ```
 
 to the require section of your `composer.json` file.
@@ -27,92 +27,91 @@ Usage
 Add this configuration to your config file
 
 ```php
- 'components' => [
+'components' => [
     ...
-    's3' => [
-        'class' => 'virbo\kilatstorage\S3Client',
-            'credentials' => [
-                'key' => 'kilatstorage-key',
-                'secret' => 'kilatstorage-secret',
-            ],
-            'region' => 'kilatstorage-region', //default: 'id-jkt-1
-            'version' => 'kilatstorage-version', //default: 'latest'
-        ],
+    'bni' => [
+        'class' => BniEcoll::class,
+        'clientId' => 'xxx',
+        'secretId' => 'xxxxxx',
+        'endpoint' => BniEcoll::ENDPOINT_PRODUCTION,
     ],
     ...
+],
 ```
 
-and then create new function, example:
-
-#Create bucket
+#Inquiry VA
 ~~~php
-public function actionCreate()
+public function actionInquiryVa()
 {
-    $s3 = Yii::$app->s3;
-    try {
-        $result = $s3->createBucket('new_bucket_name');
-        return $result;
-    } catch (S3Exception $e) {
-        echo $e->getMessage();
-    }
+    return Yii::$app->bni->inquiryVa([
+        'trx_id' => 'INV/0001'
+    ]);
 }
 ~~~
 
-#List Bucket
+#Create VA
 ~~~php
-public function actionListBucket()
+public function actionCreateVa()
 {
-    $s3 = Yii::$app->s3;
-    try {
-    	$result = $s3->listBuckets();
-    	foreach ($result['Buckets'] as $bucket) {
-    	    echo $bucket['Name'] . "\n";
-    	}
-    } catch (S3Exception $e) {
-    	echo $e->getMessage();
-    }
-}
-~~~
-
-#List Object/Content
-~~~php
-public function actionList()
-{
-    $s3 = Yii::$app->s3;
-    try {
-        $result = $s3->listObjects('bucket_name');
-        foreach ($result['Contents'] as $bucket) {
-            echo $bucket['Key'] . "<br>";
-        }
-    } catch (S3Exception $e) {
-        echo $e->getMessage();
-    }
-}
-~~~
-
-#Delete empty bucket
-~~~php
-public function actionDelete()
-{
-    $s3 = Yii::$app->s3;
-    try {
-        $result = $s3->deleteBucket('bucket_name');
-        return $result;
-    } catch (S3Exception $e) {
-        echo $e->getMessage();
-    }
-}
-~~~
-
-#Upload object/content
-~~~php
-public function actionUpload()
-{
-    $s3 = Yii::$app->s3;
-    $file = Yii::getAlias('@web/assets/images/image1.jpg');
-    $key = 'assets/images/'.basename($file);     //will put object in folder assets/images
+    $data = [
+        'client_id' => Yii::$app->bni->clientId,
+        'trx_id' => 'INV/0001',
+        'trx_amount' => 200000,
+        'billing_type' => 'c',
+        'datetime_expired' => '2021-03-19 11:17:29',
+        'virtual_account' => '1234567890123456',
+        'customer_name' => 'Fulan',
+        'customer_email' => 'fulan@gmail.com',
+        'customer_phone' => '1234567890123',
+        'description' => 'Invoice for registration webinar'
+    ];
     
-    return $s3->putObject('marketplace', $key, $file);
+    return Yii::$app->bni->createVa($data); //create billing without notif sms
+    
+    //or
+    //return Yii::$app->bni->createVa($data, true); //create billing with notif sms
 }
 ~~~
 
+#Update VA
+~~~php
+public function actionUpdateVa()
+{
+    $data = [
+        'client_id' => Yii::$app->bni->clientId,
+        'trx_id' => 'INV/0001',
+        'trx_amount' => 200000,
+        'billing_type' => 'c',
+        'datetime_expired' => '2021-03-19 11:17:29',
+        'virtual_account' => '1234567890123456',
+        'customer_name' => 'Fulan',
+        'customer_email' => 'fulan@gmail.com',
+        'customer_phone' => '1234567890123',
+        'description' => 'Invoice for registration webinar'
+    ];
+    
+    return Yii::$app->bni->updateVa($data);
+}
+~~~
+
+#Using raw function
+~~~php
+public function actionRaw()
+{
+    $data = [
+        'type' => 'createbilling',
+        'client_id' => Yii::$app->bni->clientId,
+        'trx_id' => 'INV/0001',
+        'trx_amount' => 200000,
+        'billing_type' => 'c',
+        'datetime_expired' => '2021-03-19 11:17:29',
+        'virtual_account' => '1234567890123456',
+        'customer_name' => 'Fulan',
+        'customer_email' => 'fulan@gmail.com',
+        'customer_phone' => '1234567890123',
+        'description' => 'Invoice for registration webinar'
+    ];
+    
+    return Yii::$app->bni->sendData($data);
+}
+~~~
