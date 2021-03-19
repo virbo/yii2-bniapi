@@ -1,0 +1,22 @@
+{
+    "name": "virbo/yii2-kilatstorage",
+    "description": "Library for API BNI e-Collection",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension","bni","ecoll"],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Yusuf Ayuba",
+            "email": "yusuf@dutainformasi.net"
+        }
+    ],
+    "require": {
+        "yiisoft/yii2": "~2.0.0",
+        "yiisoft/yii2-httpclient": "^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "virbo\\bniecoll\\": "src/"
+        }
+    }
+}
