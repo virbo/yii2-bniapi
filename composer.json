@@ -16,7 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "virbo\\bniecoll\\": "src/"
+            "virbo\\bniapi\\": "src/"
         }
     }
 }
