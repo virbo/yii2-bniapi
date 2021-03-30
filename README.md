@@ -1,6 +1,6 @@
-Component API BNI eCollection for Yii2
+Component BNI eCollection for Yii2
 ===========================
-Component API BNI eCollection for Yii2
+Component BNI eCollection for Yii2
 
 Installation
 ------------
@@ -10,13 +10,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-php composer.phar require virbo/yii2-bniecoll "~1.0"
+php composer.phar require virbo/yii2-bniapi "~1.0"
 ```
 
 or add
 
 ```
-"virbo/yii2-bniecoll": "~1.0"
+"virbo/yii2-bniapi": "~1.0"
 ```
 
 to the require section of your `composer.json` file.
@@ -30,10 +30,10 @@ Add this configuration to your config file
 'components' => [
     ...
     'bni' => [
-        'class' => BniEcoll::class,
+        'class' => BniApi::class,
         'clientId' => 'xxx',
         'secretId' => 'xxxxxx',
-        'endpoint' => BniEcoll::ENDPOINT_PRODUCTION,
+        'endpoint' => BniApi::ENDPOINT_PRODUCTION,
     ],
     ...
 ],
@@ -94,7 +94,7 @@ public function actionUpdateVa()
 }
 ~~~
 
-#Using raw function
+#Using sendData function
 ~~~php
 public function actionRaw()
 {
