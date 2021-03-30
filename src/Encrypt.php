@@ -1,6 +1,6 @@
 <?php
 
-namespace virbo\bniecoll;
+namespace virbo\bniapi;
 
 use yii\helpers\Json;
 
@@ -9,7 +9,7 @@ use yii\helpers\Json;
  * @author Yusuf Ayuba <yusufayuba@live.com>
  * @since  1.0
  */
-class BniEncrypt
+class Encrypt
 {
     /**
      * parameters default from BinEnc

@@ -1,6 +1,6 @@
 <?php
 
-namespace virbo\bniecoll;
+namespace virbo\bniapi;
 
 use yii\base\Component;
 use yii\helpers\ArrayHelper;
@@ -17,16 +17,16 @@ use yii\httpclient\Client;
  * 'components' => [
  *      ...
  *      'bni' => [
- *          'class' => BniEcoll::class,
+ *          'class' => BniApi::class,
  *          'clientId' => 'xxx',
  *          'secretId' => 'xxxxxx',
- *          'endpoint' => BniEcoll::ENDPOINT_PRODUCTION,
+ *          'endpoint' => BniApi::ENDPOINT_PRODUCTION,
  *      ],
  *      ...
  * ],
  * ```
  */
-class BniEcoll extends Component
+class BniApi extends Component
 {
     /**
       * endpoint production ecollection
@@ -192,7 +192,7 @@ class BniEcoll extends Component
      */
     public function sendData($data)
     {
-        $_encrypt = BniEncrypt::encrypt($data);
+        $_encrypt = Encrypt::encrypt($data);
 
         $_data = Json::encode([
             'client_id' => $this->clientId,
